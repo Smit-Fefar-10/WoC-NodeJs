@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Pictionary Game</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
-    <script src="server.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="client.js"></script>
     <style>
         body{
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -36,8 +36,6 @@
         #entry_room{
             text-align: center;
             width: 50%;
-            /* background-color: beige; */
-            /* border: 5px solid darkblue; */
             border-radius: 10px;
             margin-left: 29%;
             margin-right: 29%;
@@ -80,8 +78,6 @@
     <div class="visible" id="entry_room">
         <h1 style="color: black; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color:rgb(95, 158, 160) ;margin-bottom: 0%;height: 50px;margin-top: 0%;padding-top: 4%;padding-bottom: 3%;
         border-radius: 10px;">Pictionary Game</h1>
-        <!-- <h3 style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">Enjoy the Game</h3>
-        <hr> -->
         <div id="join_room"
         style="border-radius: 10px; margin-top: 20px; background-color: rgb(184, 209, 210);">
             <div style="color:darkblue; font-size: 25px; margin-top: 4px;margin-bottom: 4px;">
@@ -95,7 +91,7 @@
                 Room id :
             </DIV>
             <input type="text" class="input_box" id="room_id_join_room" placeholder="Enter room id" style="width: 50%;  border-color:rgb(2, 2, 2) ;margin-bottom: 10px;"><br>
-            <button onclick="joinRoom()" class="button" id="submit_join_room">Join Room</button>
+            <button method="get" onclick="joinRoom()" class="button" id="submit_join_room">Join Room</button>
         </div>
         <div id="create_room" style="border-radius: 10px; margin-top: 20px; background-color: rgb(184, 209, 210);">
             <div style="color:darkblue; font-size: 25px;margin-bottom: 4px;">
@@ -104,42 +100,9 @@
             <hr>
             <div style="color: rgb(75, 43, 43); font-size: 20px; margin-bottom: 4px;
             margin-top: 4px;">Username :</div>
-            <input type="text" class="input_box" id="username_join_room" placeholder="Enter your Username" style="width: 50%;  border-color:hsl(0, 0%, 2%) ; margin-bottom:10px;"><br>
-            <button onclick="createroom()" class="button" id="submit_create_room">Create Room</button>
+            <input type="text" class="input_box" id="username_create_room" placeholder="Enter your Username" style="width: 50%;  border-color:hsl(0, 0%, 2%) ; margin-bottom:10px;"><br>
+            <button method="get" onclick="createroom()" class="button" id="submit_create_room">Create Room</button>
         </div>
     </div>
-    <script>
-            const socket = io();
-            function joinRoom() {
-                const section1 = document.getElementById('entry_room');
-                const section2 = document.getElementById('second');
-                section1.style.display = 'none';
-                section2.style.display = 'block';
-                const username = document.getElementById('username_join_room').value;
-                const roomId = document.getElementById('room_id_join_room').value;
-                socket.emit('joinRoom', { username, roomId });
-            }
-            function createroom(){
-                const section1 = document.getElementById('entry_room');
-                const section2 = document.getElementById('second');
-                section1.style.display = 'none';
-                section2.style.display = 'block';
-                const username = document.getElementById('username_create_room').value;
-                socket.emit('createroom', {username});
-            }
-            socket.on('userList', (usernames) => {
-                const usernamesContainer = document.getElementById('usernames');
-                usernamesContainer.innerHTML = '<h1>Usernames</h1><hr>';
-
-                usernames.forEach((username) => {
-                    usernamesContainer.innerHTML += `<div>${username}</div>`;
-                });
-            });
-
-            socket.on('joinRoomResponse', (response) => {
-                alert(response); 
-            });
-        
-    </script>
 </body>
 </html>
